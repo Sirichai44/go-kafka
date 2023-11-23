@@ -1,0 +1,13 @@
+kafka:
+  servers:
+    - localhost:9092
+  group: accountConsumer
+
+db:
+  driver: mongodb
+  host: localhost
+  port: 27017
+  username: admin
+  password: P@ssw0rd
+  database: kafka_demo
+  collection: account
