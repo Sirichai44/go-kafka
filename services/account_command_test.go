@@ -122,8 +122,8 @@ func TestCloseAccount(t *testing.T) {
 
 	//Arrange
 	mockProducer := services.NewEventProducerMock()
-	service := services.NewAccountServiceCommand(mockProducer)
 	mockProducer.On("Produce", mock.AnythingOfType("CloseAccountEvent")).Return(nil)
+	service := services.NewAccountServiceCommand(mockProducer)
 
 	//Act
 	err := service.CloseAccount(command)
@@ -144,4 +144,63 @@ func TestCloseAccount(t *testing.T) {
 		assert.NotNil(t, err)                     // Assert that the returned error is not nil
 		assert.Equal(t, fiber.ErrBadRequest, err) // Assert that the returned error is not nil
 	})
+}
+
+func BenchmarkOpenAccount(b *testing.B) {
+	command := commands.OpenAccountCommand{
+		AccountHolder:  "name1",
+		AccountType:    1,
+		OpeningBalance: 1000,
+	}
+
+	mockProducer := services.NewEventProducerMock()
+	service := services.NewAccountServiceCommand(mockProducer)
+	mockProducer.On("Produce", mock.AnythingOfType("OpenAccountEvent")).Return(nil)
+
+	for i := 0; i < b.N; i++ {
+		service.OpenAccount(command)
+	}
+}
+
+func BenchmarkDepositFund(b *testing.B) {
+	command := commands.DepositFundCommand{
+		ID:     "id1",
+		Amount: 1000,
+	}
+
+	mockProducer := services.NewEventProducerMock()
+	service := services.NewAccountServiceCommand(mockProducer)
+	mockProducer.On("Produce", mock.AnythingOfType("DepositFundEvent")).Return(nil)
+
+	for i := 0; i < b.N; i++ {
+		service.DepositFund(command)
+	}
+}
+func BenchmarkWithdrawFund(b *testing.B) {
+	command := commands.WithdrawFundCommand{
+		ID:     "id1",
+		Amount: 1000,
+	}
+
+	mockProducer := services.NewEventProducerMock()
+	service := services.NewAccountServiceCommand(mockProducer)
+	mockProducer.On("Produce", mock.AnythingOfType("WithdrawFundEvent")).Return(nil)
+
+	for i := 0; i < b.N; i++ {
+		service.WithdrawFund(command)
+	}
+}
+
+func BenchmarkCloseAccount(b *testing.B) {
+	command := commands.CloseAccountCommand{
+		ID: "id1",
+	}
+
+	mockProducer := services.NewEventProducerMock()
+	mockProducer.On("Produce", mock.AnythingOfType("CloseAccountEvent")).Return(nil)
+	service := services.NewAccountServiceCommand(mockProducer)
+
+	for i := 0; i < b.N; i++ {
+		service.CloseAccount(command)
+	}
 }
