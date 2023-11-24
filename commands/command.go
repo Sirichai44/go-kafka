@@ -1,9 +1,9 @@
 package commands
 
 type OpenAccountCommand struct {
-	AccountHolder  string
-	AccountType    int
-	OpeningBalance float64
+	AccountHolder  string  `json:"accountHolder"`
+	AccountType    int     `json:"accountType"`
+	OpeningBalance float64 `json:"openingBalance"`
 }
 
 type DepositFundCommand struct {
