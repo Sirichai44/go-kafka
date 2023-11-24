@@ -1,11 +1,11 @@
 package services
 
 import (
-	"errors"
 	"gokafka/commands"
 	"gokafka/events"
 	"log"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
 
@@ -27,7 +27,7 @@ func NewAccountServiceCommand(eventProducer EventProducer) AccountService {
 func (obj accountService) OpenAccount(command commands.OpenAccountCommand) (id string, err error) {
 
 	if command.AccountHolder == "" || command.AccountType == 0 || command.OpeningBalance == 0 {
-		return "", errors.New("bad request")
+		return "", fiber.ErrBadRequest
 	}
 	event := events.OpenAccountEvent{
 		ID:             uuid.NewString(),
@@ -42,7 +42,7 @@ func (obj accountService) OpenAccount(command commands.OpenAccountCommand) (id s
 
 func (obj accountService) DepositFund(command commands.DepositFundCommand) error {
 	if command.ID == "" || command.Amount == 0 {
-		return errors.New("bad request")
+		return fiber.ErrBadRequest
 	}
 	event := events.DepositFundEvent{
 		ID:     command.ID,
@@ -55,7 +55,7 @@ func (obj accountService) DepositFund(command commands.DepositFundCommand) error
 
 func (obj accountService) WithdrawFund(command commands.WithdrawFundCommand) error {
 	if command.ID == "" || command.Amount == 0 {
-		return errors.New("bad request")
+		return fiber.ErrBadRequest
 	}
 	event := events.WithdrawFundEvent{
 		ID:     command.ID,
@@ -68,7 +68,7 @@ func (obj accountService) WithdrawFund(command commands.WithdrawFundCommand) err
 
 func (obj accountService) CloseAccount(command commands.CloseAccountCommand) error {
 	if command.ID == "" {
-		return errors.New("bad request")
+		return fiber.ErrBadRequest
 	}
 	event := events.CloseAccountEvent{
 		ID: command.ID,
