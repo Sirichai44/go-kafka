@@ -6,4 +6,4 @@
 >
 - pipeline **Command** --> **Controller** --> **Service Command** --> **Producer** --> **Consumer** --> **Handler** --> **Repository** --> **MongoDB**
 >
-- **start with** docker-compose.yml --> docker-compose up -d
+- **start with** docker-compose.yml
