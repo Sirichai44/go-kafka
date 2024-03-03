@@ -1,5 +1,4 @@
 # go-kafka
-- combine main.go with go routine
   - Fiber API
   - Kafka Producer
   - Kafka Consumer
